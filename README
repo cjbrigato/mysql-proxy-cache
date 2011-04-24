@@ -21,3 +21,5 @@ Also :
 Change your code to point to the mysql-proxy port (4040 by default)
 
 Beware of LUA_PATH and LUA_CPATH env vars, which are pain for the script to work
+
+For Debian 4/5/6 : See debian.install file

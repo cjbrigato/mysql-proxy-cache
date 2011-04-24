@@ -1,0 +1,31 @@
+---- INSTALL ----
+
+apt-get install mysql-proxy
+apt-get install memcached
+apt-get install lua5.1 liblua5.1-md5-0 liblua5.1-socket2 luarocks
+wget http://luaforge.net/frs/download.php/4541/liblua5.1-memcached0.deb
+dpkg -i liblua5.1-memcached0.deb
+git clone git@github.com:khemael/mysql-proxy-cache.git
+cp mysql-proxy-cache/mysql-proxy-cache.lua /usr/share/mysql-proxy
+
+echo 'ENABLED="true"' > /etc/default/mysql-proxy
+echo 'OPTION="--proxy-lua-script=/usr/share/mysql-proxy/mysql-proxy-cache.lua"' >> /etc/default/mysql-proxy
+
+
+--- MAKE IT WORK ---
+1. Edit mysql-proxy init script for include paths
+nano /etc/init.d/mysql-proxy
+2. Add :
+export LUA_PATH="/usr/share/lua/5.1/?.lua;;"
+export LUA_CPATH="/usr/share/lua/5.1/?.so;;"
+3. Restart : /etc/init.d/mysql-proxy restart
+
+
+--- Edit cache time ---
+nano /usr/share/mysql-proxy/mysql-proxy-cache.lua
+edit cache_timeout = 30 according to your needs (in seconds)
+
+--- Update your code ---
+Change your DB host/port  from 'localhost' to '127.0.0.1:4040' 
+
+--- ENJOY ---
